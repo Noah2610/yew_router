@@ -8,11 +8,16 @@ use stdweb::Value;
 
 //use std::ops::Deref;
 use std::ops::Deref;
-use yew::agent::Transferable;
 
 /// Any state that can be stored by the History API must meet the criteria of this trait.
-pub trait RouteState: Clone + Default + JsSerialize + TryFrom<Value> + 'static {}
-impl<T> RouteState for T where T: Clone + Default + JsSerialize + TryFrom<Value> + 'static {}
+pub trait RouteState:
+    Clone + Default + JsSerialize + TryFrom<Value> + 'static
+{
+}
+impl<T> RouteState for T where
+    T: Clone + Default + JsSerialize + TryFrom<Value> + 'static
+{
+}
 
 /// The representation of a route, segmented into different sections for easy access.
 #[derive(Clone, Debug, Default, PartialEq, Serialize, Deserialize)]
@@ -27,7 +32,11 @@ pub struct Route<T> {
 ///
 /// # Note
 /// This expects that all three already have their expected separators (?, #, etc)
-pub(crate) fn format_route_string(path: &str, query: &str, fragment: &str) -> String {
+pub(crate) fn format_route_string(
+    path: &str,
+    query: &str,
+    fragment: &str,
+) -> String {
     format!(
         "{path}{query}{fragment}",
         path = path,
@@ -80,5 +89,3 @@ impl<T> Deref for Route<T> {
         &self.route
     }
 }
-
-impl<T> Transferable for Route<T> where for<'de> T: Serialize + Deserialize<'de> {}

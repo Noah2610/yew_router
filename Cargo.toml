@@ -5,7 +5,6 @@ authors = ["Henry Zimmerman <zimhen7@gmail.com>"]
 edition = "2018"
 license = "MIT"
 
-
 [features]
 default = ["core", "unit_alias"]
 
@@ -18,12 +17,10 @@ components = ["agent" ]
 
 agent = []
 
-
 [dependencies]
 log = "0.4"
 serde = "1.0"
 serde_derive = "1.0"
-yew = "0.9.0"
 stdweb = "0.4"
 
 yew_router_route_parser = {path = "crates/yew_router_route_parser"}
@@ -31,9 +28,11 @@ yew_router_macro = {path = "crates/yew_router_macro"}
 nom = {version = "5.0.0"}
 proc-macro-hack = {version = "0.5.9"}
 
+[dependencies.yew]
+git = "https://github.com/yewstack/yew"
+rev = "5056b8458f417cbc4fbcd891529b51c9bc4ba19c"
 
 [workspace]
-
 members = [
     "crates/yew_router_route_parser",
     "crates/yew_router_macro",
@@ -42,4 +41,3 @@ members = [
     "examples/switch",
     "examples/minimal"
 ]
-

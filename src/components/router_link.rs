@@ -11,7 +11,7 @@ use crate::RouterState;
 #[derive(Debug)]
 pub struct RouterLink<T: for<'de> RouterState<'de>> {
     router: RouteAgentDispatcher<T>,
-    props: Props<T>,
+    props:  Props<T>,
 }
 
 impl<T: for<'de> RouterState<'de>> Component for RouterLink<T> {
@@ -40,9 +40,7 @@ impl<T: for<'de> RouterState<'de>> Component for RouterLink<T> {
         self.props = props;
         true
     }
-}
 
-impl<T: for<'de> RouterState<'de>> Renderable<RouterLink<T>> for RouterLink<T> {
     fn view(&self) -> Html<Self> {
         use stdweb::web::event::IEvent;
         let target: &str = &self.props.link;

@@ -23,13 +23,18 @@ mod dispatcher;
 pub use dispatcher::RouteAgentDispatcher;
 
 /// Any state that can be used in the router agent must meet the criteria of this trait.
-pub trait AgentState<'de>: RouteState + Serialize + Deserialize<'de> + Debug {}
-impl<'de, T> AgentState<'de> for T where T: RouteState + Serialize + Deserialize<'de> + Debug {}
+pub trait AgentState<'de>:
+    RouteState + Serialize + Deserialize<'de> + Debug
+{
+}
+impl<'de, T> AgentState<'de> for T where
+    T: RouteState + Serialize + Deserialize<'de> + Debug
+{
+}
 
 /// Non-instantiable type.
 #[derive(Serialize, Deserialize, Clone, Copy, Debug)]
 pub enum Void {}
-impl Transferable for Void {}
 
 /// Message used for the RouteAgent.
 #[derive(Debug)]
@@ -55,8 +60,6 @@ pub enum RouteRequest<T> {
     // TODO this is a temporary message because yew currently doesn't call the destructor, so it must be manually engaged
     Disconnect,
 }
-
-impl<T> Transferable for RouteRequest<T> where for<'de> T: Serialize + Deserialize<'de> {}
 
 /// The RouteAgent holds on to the RouteService singleton and mediates access to it.
 ///
@@ -133,8 +136,10 @@ where
         match msg {
             RouteRequest::ReplaceRoute(route) => {
                 let route_string: String = route.to_string();
-                self.route_service
-                    .replace_route(&route_string, route.state.unwrap_or_default());
+                self.route_service.replace_route(
+                    &route_string,
+                    route.state.unwrap_or_default(),
+                );
                 let route = Route::current_route(&self.route_service);
                 for sub in &self.subscribers {
                     self.link.response(*sub, route.clone());
@@ -142,8 +147,10 @@ where
             }
             RouteRequest::ReplaceRouteNoBroadcast(route) => {
                 let route_string: String = route.to_string();
-                self.route_service
-                    .replace_route(&route_string, route.state.unwrap_or_default());
+                self.route_service.replace_route(
+                    &route_string,
+                    route.state.unwrap_or_default(),
+                );
             }
             RouteRequest::ChangeRoute(route) => {
                 let route_string: String = route.to_string();
